@@ -22,8 +22,7 @@ public class DemoWSTests {
     }
 
     @Test
-    void loginWithCookieToCheckUsersNamesTest () {
-
+    void blankEmailErrorMessageTest() {
         step("Get cookie by api and set it to browser", () -> {
             String authorizationCookie =
                     given()
@@ -37,21 +36,20 @@ public class DemoWSTests {
                             .extract()
                             .cookie("NOPCOMMERCE.AUTH");
 
-        step("Open minimal content, because cookie can be set when site is opened", () ->
-                open("/Themes/DefaultClean/Content/images/logo.png"));
+            step("Open minimal content, because cookie can be set when site is opened", () ->
+                    open("/Themes/DefaultClean/Content/images/logo.png"));
 
-        step("Set cookie to browser", () ->
-                getWebDriver().manage().addCookie(
-                        new Cookie("NOPCOMMERCE.AUTH", authorizationCookie)));
+            step("Set cookie to browser", () ->
+                    getWebDriver().manage().addCookie(
+                            new Cookie("NOPCOMMERCE.AUTH", authorizationCookie)));
         });
-
 
         step("Open profile page", () ->
                 open("/customer/info"));
 
         step("Clear email input", () ->
                 $("#Email").setValue(""));
-                $(".save-customer-info-button").click();
+        $(".save-customer-info-button").click();
 
         step("Verify error text", () ->
                 $(".field-validation-error span").shouldHave(text("Email is required.")));
